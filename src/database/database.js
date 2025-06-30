@@ -1,3 +1,4 @@
+//src/database/database.js
 import config from '../config/env.js';
 import { Sequelize } from 'sequelize';
 

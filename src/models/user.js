@@ -1,7 +1,9 @@
+//src/models/user.js
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Status } from "../constants/index.js";
 import { Task } from "./task.js";
+import { encriptar } from "../common/bycript.js";
 export const User = sequelize.define('users', {
     id: {
         type: DataTypes.INTEGER,
@@ -41,3 +43,22 @@ export const User = sequelize.define('users', {
 
 User.hasMany(Task)
 Task.belongsTo(User)
+
+
+User.beforeCreate(async (user) => {
+  try {
+    user.password = await encriptar(user.password);
+  } catch (error) {
+    logger.error(error.message);
+    throw new Error('Error al encriptar antes de crear');
+  }
+});
+/*User.hasMany(Task, {
+    foreignKey: 'userId',
+    sourceKey: 'id',
+    
+});
+Task.belongsTo(User, {
+    foreignkey: 'userId',
+    targetKey: 'id',
+});*/

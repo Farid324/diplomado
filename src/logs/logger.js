@@ -1,3 +1,4 @@
+//src/logs/logger.js
 import pino from "pino";
 
 const logger = pino({

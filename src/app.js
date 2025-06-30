@@ -1,9 +1,15 @@
+//src/app.js
 import express from 'express';
 
 const app = express();
 
 import usersRoutes from './routes/users.routes.js';
+import morgan from 'morgan';
 
-app.use('/api/v1/users', usersRoutes);
+//Middlewares
+app.use(morgan('dev'));
+app.use(express.json());
+//Routes
+app.use('/api/users', usersRoutes);
 
 export default app;

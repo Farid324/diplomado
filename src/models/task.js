@@ -1,3 +1,4 @@
+//src/models/task.js
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
@@ -20,4 +21,4 @@ export const Task = sequelize.define('tasks', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-})
+});

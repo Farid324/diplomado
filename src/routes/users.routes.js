@@ -1,3 +1,4 @@
+//src/routes/users.routes.js
 import { Router } from "express";
 import userController from "../controllers/users.controller.js";
 
@@ -10,6 +11,8 @@ const router = Router();
     });
 })*/
 
-router.get("/", userController.getUsers);
-
+router
+.route('/')
+.get(userController.getUsers)
+.post(userController.createUser);
 export default router;
