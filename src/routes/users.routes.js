@@ -1,8 +1,8 @@
 //src/routes/users.routes.js
 import { Router } from "express";
 import userController from "../controllers/users.controller.js";
-import { createUserSchema } from "../validators/user.validate.js";
-import validate from '../validators/validate.js';
+import { createUserSchema } from "../validator/user.validate.js";
+import validate from '../validator/validate.js';
 
 const router = Router();
 
@@ -17,4 +17,13 @@ router
 .route('/')
 .get(userController.getUsers)
 .post(validate(createUserSchema, 'body'), userController.createUser);
+
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .put(userController.updateUser)
+  .patch(userController.updateUserStatus)
+  .delete(userController.deleteUser);
+
+
 export default router;

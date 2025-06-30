@@ -13,7 +13,8 @@ export const User = sequelize.define('users', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        valide: {
+        unique: true,
+        validate: {
             notNull: {
                 msg: "Username is required"
             }

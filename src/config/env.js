@@ -16,6 +16,8 @@ const config = {
     DB_DATABASE: process.env.DB_DATABASE,
     DB_DIALECT: process.env.DB_DIALECT,
     BCRYPT_SALT_ROUNDS: +process.env.BCRYPT_SALT_ROUNDS,
+    JWT_SECRET: requiredEnv("JWT_SECRET"),
+    JWT_EXPIRES_SECONDS: process.env.JWT_EXPIRES_SECONDS || "3600",
 }
 
 export default config;
