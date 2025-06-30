@@ -1,6 +1,8 @@
 //src/routes/users.routes.js
 import { Router } from "express";
 import userController from "../controllers/users.controller.js";
+import { createUserSchema } from "../validators/user.validate.js";
+import validate from '../validators/validate.js';
 
 const router = Router();
 
@@ -14,5 +16,5 @@ const router = Router();
 router
 .route('/')
 .get(userController.getUsers)
-.post(userController.createUser);
+.post(validate(createUserSchema, 'body'), userController.createUser);
 export default router;
