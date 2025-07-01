@@ -11,5 +11,13 @@ export const sequelize = new Sequelize(
         port: config.DB_PORT,
         dialect: config.DB_DIALECT, //db dialect
         logging: console.log,
+        dialectOptions: config.DB_USE_SSL === 'true' 
+        ? {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false, // This is important for self-signed certificates
+            },
+        }
+        :{},
     }
 );
