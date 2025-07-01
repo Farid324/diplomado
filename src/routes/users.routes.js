@@ -12,6 +12,7 @@ const router = Router();
         message: "Welcome to the Users API",
     });
 })*/
+router.get('/list/pagination', userController.getUsersPaginated);
 
 router
 .route('/')
@@ -25,5 +26,5 @@ router
   .patch(userController.updateUserStatus)
   .delete(userController.deleteUser);
 
-
+router.get('/:id/tasks', userController.getUserTasks);
 export default router;

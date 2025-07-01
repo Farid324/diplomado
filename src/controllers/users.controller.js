@@ -4,6 +4,7 @@ import { Task } from "../models/task.js";
 import logger from "../logs/logger.js";
 import { Status } from "../constants/index.js";
 import { encriptar } from "../common/bycript.js";
+import { Op } from "sequelize";
 async function getUsers(req, res, next) {
   try {
     const users = await User.findAll({
@@ -113,6 +114,67 @@ async function deleteUser(req, res, next) {
     next(error);
   }
 }
+async function getUserTasks(req, res, next) {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findOne({
+      where: { id },
+      attributes: ['username'],
+      include: {
+        model: Task,
+        attributes: ['name', 'done'],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json({
+      username: user.username,
+      tasks: user.tasks,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getUsersPaginated(req, res, next) {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      search = '',
+      orderBy = 'id',
+      orderDir = 'DESC',
+    } = req.query;
+
+    const offset = (page - 1) * limit;
+    const whereClause = search
+      ? { username: { [Op.iLike]: `%${search}%` } }
+      : {};
+
+    const { count: total, rows: users } = await User.findAndCountAll({
+      attributes: ['id', 'username', 'status'],
+      where: whereClause,
+      order: [[orderBy, orderDir]],
+      limit: Number(limit),
+      offset: Number(offset),
+    });
+
+    const pages = Math.ceil(total / limit);
+
+    res.json({
+      total,
+      page: Number(page),
+      pages,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 export default {
     getUsers,
     createUser,
@@ -120,4 +182,7 @@ export default {
     updateUser,
     updateUserStatus,
     deleteUser,
+    getUserTasks,
+    getUsersPaginated
+
 };
